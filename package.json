@@ -1,0 +1,16 @@
+{
+  "name": "visa-navigator-backend",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "~4.16.1",
+    "mongodb": "^6.11.0",
+    "nodemon": "^3.1.7"
+  }
+}
