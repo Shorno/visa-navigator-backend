@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import {connectToDatabase} from "./db.js";
-import {addNewVisa} from "./queries.js";
+import {addNewUser, addNewVisa, getAllVisas} from "./queries.js";
 
 const app = express();
 app.use(cors());
@@ -27,6 +27,31 @@ app.post("/api/visa", async (req, res) => {
         res.status(500).json({error: "Error adding new visa"});
     }
 });
+
+app.get("/api/visa", async (req, res) => {
+    try {
+        const db = await connectToDatabase();
+        const visas = await getAllVisas(db);
+        res.status(200).json(visas);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({error: "Error fetching visas"});
+    }
+});
+
+
+app.post("api/users", async (req, res) => {
+    try {
+        const db = await connectToDatabase();
+        const newUser = req.body;
+        const result = await addNewUser(db, newUser);
+        res.status(201).json(result);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({error: "Error adding new user"});
+    }
+});
+
 
 app.listen(PORT, () => {
     console.log(`Local sever running on http://localhost:${PORT}/api `);
