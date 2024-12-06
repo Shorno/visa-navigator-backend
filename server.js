@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import {connectToDatabase} from "./db.js";
-import {addNewUser, addNewVisa, getAllVisas} from "./queries.js";
+import {addNewUser, addNewVisa, getAllVisas, getLatestVisas} from "./queries.js";
 
 const app = express();
 app.use(cors());
@@ -39,6 +39,17 @@ app.get("/api/visa", async (req, res) => {
     }
 });
 
+
+app.get("/api/latestVisas", async (req, res) => {
+    try {
+        const db = await connectToDatabase();
+        const visas = await getLatestVisas(db, 6);
+        res.status(200).json(visas);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({error: "Error fetching latest visas"});
+    }
+});
 
 app.post("api/users", async (req, res) => {
     try {
