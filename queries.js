@@ -19,7 +19,10 @@ export async function getVisaById(db, visaId) {
 
 export async function visaApplication(db, application) {
     return db.collection("visaApplications").insertOne(application);
+}
 
+export async function getVisaApplicationsByEmail(db, email) {
+    return db.collection("visaApplications").find({email: email}).toArray();
 }
 
 export async function getVisaByUserEmail(db, email) {

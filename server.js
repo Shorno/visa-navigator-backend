@@ -4,7 +4,7 @@ import {connectToDatabase} from "./db.js";
 import {
     addNewVisa, deleteVisa,
     getAllVisas,
-    getLatestVisas,
+    getLatestVisas, getVisaApplicationsByEmail,
     getVisaById,
     getVisaByUserEmail, updateVisa,
     visaApplication
@@ -113,6 +113,18 @@ app.post("/api/visaApplication", async (req, res) => {
     } catch (err) {
         console.error(err);
         res.status(500).json({error: "Error applying for visa"});
+    }
+});
+
+app.get("/api/visa-applications", async (req, res) => {
+    try {
+        const db = await connectToDatabase();
+        const email = req.query.email;
+        const applications = await getVisaApplicationsByEmail(db, email);
+        res.status(200).json(applications);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({error: "Error fetching visa applications"});
     }
 });
 
