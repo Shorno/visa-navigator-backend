@@ -2,11 +2,11 @@ import express from "express";
 import cors from "cors";
 import {connectToDatabase} from "./db.js";
 import {
-    addNewVisa, deleteVisa,
+    addNewVisa, deleteVisa, deleteVisaApplication,
     getAllVisas,
     getLatestVisas, getVisaApplicationsByEmail,
     getVisaById,
-    getVisaByUserEmail, updateVisa,
+    getVisaByUserEmail, getVisasByType, updateVisa,
     visaApplication
 } from "./queries.js";
 
@@ -116,7 +116,7 @@ app.post("/api/visaApplication", async (req, res) => {
     }
 });
 
-app.get("/api/visa-applications", async (req, res) => {
+app.get("/api/visaApplication", async (req, res) => {
     try {
         const db = await connectToDatabase();
         const email = req.query.email;
@@ -129,6 +129,32 @@ app.get("/api/visa-applications", async (req, res) => {
 });
 
 
+app.delete("/api/visaApplication/:id", async (req, res) => {
+    try {
+        const db = await connectToDatabase();
+        const applicationId = req.params.id;
+        console.log("Deleting application with id:", applicationId);
+        const result = await deleteVisaApplication(db, applicationId);
+        console.log("Result:", result);
+        res.status(200).json(result);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({error: "Error deleting visa application"});
+    }
+});
+
+
+app.get("/api/visaByType", async (req, res) => {
+    try {
+        const db = await connectToDatabase();
+        const visaType = req.query.type;
+        const visas = await getVisasByType(db, visaType);
+        res.status(200).json(visas);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({error: "Error fetching visas by type"});
+    }
+});
 
 
 app.listen(PORT, () => {

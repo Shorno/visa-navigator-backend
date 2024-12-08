@@ -25,6 +25,11 @@ export async function getVisaApplicationsByEmail(db, email) {
     return db.collection("visaApplications").find({email: email}).toArray();
 }
 
+
+export async function deleteVisaApplication(db, applicationId) {
+    return db.collection("visaApplications").deleteOne({_id: applicationId});
+}
+
 export async function getVisaByUserEmail(db, email) {
     return db.collection("visa").find({email: email}).toArray();
 }
@@ -37,3 +42,6 @@ export async function deleteVisa(db, visaId) {
     return db.collection("visa").deleteOne({_id: new ObjectId(visaId)});
 }
 
+export async function getVisasByType(db, visaType) {
+    return db.collection("visa").find({visaType: visaType}).toArray();
+}
