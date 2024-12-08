@@ -17,7 +17,20 @@ export async function getVisaById(db, visaId) {
     return db.collection("visa").findOne({_id: new ObjectId(visaId)});
 }
 
+export async function visaApplication(db, application) {
+    return db.collection("visaApplications").insertOne(application);
 
-export async function addNewUser(db, newUser) {
-    return db.collection("users").insertOne(newUser);
 }
+
+export async function getVisaByUserEmail(db, email) {
+    return db.collection("visa").find({email: email}).toArray();
+}
+
+export async function updateVisa(db, visaId, updatedVisa) {
+    return db.collection("visa").updateOne({_id: new ObjectId(visaId)}, {$set: updatedVisa});
+}
+
+export async function deleteVisa(db, visaId) {
+    return db.collection("visa").deleteOne({_id: new ObjectId(visaId)});
+}
+
